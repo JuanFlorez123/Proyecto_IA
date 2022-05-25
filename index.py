@@ -1,3 +1,3 @@
-from app import busqueda_por_amplitud
+from app import mainLopp
 
-busqueda_por_amplitud()
+mainLopp()

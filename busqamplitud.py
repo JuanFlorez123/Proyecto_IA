@@ -1,4 +1,7 @@
 
+from importlib.util import set_loader
+
+
 class BusquedaAmplitud():
     operador: str
 
@@ -51,43 +54,93 @@ class BusquedaAmplitud():
 
     def verificar(self, posColum, posFil):
         movimientos = []
+        meta: str = "0"
 
         movFilaIz = posFil - 1
         if movFilaIz >= 0:
             izquierda: int = self.matriz[posColum][movFilaIz]
 
             if(izquierda != 1 and izquierda != 10):
-                movimientos.append(f"({posColum}, {movFilaIz})")
+                movimientos.append("1")
             elif izquierda == 5:
-                movimientos.append(f"({posColum}, {movFilaIz})")
-        
+                meta = "1"
+            else:
+                movimientos.append("0")
+        else:
+                movimientos.append("0")
 
+        
+        movColumArriba = posColum - 1
+        if movColumArriba >=0:
+            arriba: int = self.matriz[movColumArriba][posFil]
+
+            if(arriba != 1 and arriba != 10):
+                movimientos.append("1")
+            elif arriba == 5:
+                meta = "1"
+            else:
+                movimientos.append("0")
+        
+        else:
+                movimientos.append("0")
 
         movFilaDe = posFil + 1
         if movFilaDe >= 0:
             derecha: int = self.matriz[posColum][movFilaDe]
 
             if(derecha != 1 and derecha != 10):
-                movimientos.append(f"({posColum}, {movFilaDe})")
+                movimientos.append("1")
             elif derecha == 5:
-                movimientos.append(f"({posColum}, {movFilaDe})")
+                meta = "1"
+            else:
+                movimientos.append("0")
+        else:
+                movimientos.append("0")
+
+
 
         movColumAbajo = posColum + 1
         if movColumAbajo >= 0:
             abajo: int = self.matriz[movColumAbajo][posFil]
-
+            print(movColumAbajo, posFil)
             if(abajo != 1 and abajo != 10):
-                movimientos.append(f"({movColumAbajo}, {posFil})")
+                movimientos.append("1")
             elif abajo == 5:
-                movimientos.append(f"({movColumAbajo}, {posFil})")
+                meta = "1"
+            else:
+                movimientos.append("0")
+        
+        else:
+                movimientos.append("0")
 
-        movColumArriba = posColum - 1
-        if movColumArriba >=0:
-            arriba: int = self.matriz[movColumArriba][posFil]
-
-            if(arriba != 1 and arriba != 10):
-                movimientos.append(f"({movColumArriba}, {posFil})")
-            elif arriba == 5:
-                movimientos.append(f"({movColumArriba}, {posFil})")
-
+        movimientos.append(meta)
+    
         return movimientos
+
+    def mover(self, movimientos, posColum, posFil):
+        matrizMovimientos:str = ""
+        for mv in movimientos:
+            matrizMovimientos += mv
+
+        if matrizMovimientos == "10100":
+            self.moverDerecha(posColum, posFil)
+        
+        if matrizMovimientos == "10010":
+            self.moverIzquierda(posColum, posFil)
+        
+        if matrizMovimientos == "01000":
+            self.moverArriba(posColum, posFil)
+
+        if matrizMovimientos == "00100":
+            self.moverDerecha(posColum, posFil)
+
+        if matrizMovimientos == "01100":
+            self.moverArriba(posColum, posFil)
+        
+        if matrizMovimientos == "10000":
+            self.moverIzquierda(posColum, posFil)
+
+        if matrizMovimientos == "00010":
+            self.moverAbajo(posColum, posFil)
+
+        return matrizMovimientos
